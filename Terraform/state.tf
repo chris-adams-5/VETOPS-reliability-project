@@ -1,5 +1,9 @@
 # IAC for the VetOps AWS resources
 
+provider "aws" {
+    region = "eu-west-2"
+}
+
 #====================================
 #terraform state bucket for state.tf
 #======================================
