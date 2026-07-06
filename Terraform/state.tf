@@ -18,4 +18,6 @@ resource "aws_s3_bucket_versioning" "state_versioning" {
 # s3 bucket for load balancer cloudwatch logs
 #====================================
 
-resource ""
+resource "aws_s3_bucket" "alb_logs" {
+    bucket = "vetop-vet-hospital-alb-logs"
+}
