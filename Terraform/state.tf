@@ -10,8 +10,6 @@ resource "aws_s3_bucket" "terraform_state" { bucket = "vet-hospital-tf-state-uni
 resource "aws_s3_bucket_versioning" "state_versioning" {
   bucket = aws_s3_bucket.terraform_state.id
   versioning_configuration {
-    {
-        status = "Enabled"
-    }
+    status = "Enabled"
   }
 }
