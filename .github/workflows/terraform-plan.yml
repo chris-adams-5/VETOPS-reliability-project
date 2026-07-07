@@ -42,8 +42,8 @@ jobs:
       - name: Post PR comment
         uses: borchero/terraform-plan-comment@v2
         with:
+          working-directory: ./Terraform
           token: ${{ github.token }}
           planfile: .Terraform/.planfile
-          working-directory: ./Terraform
 
         
