@@ -3,7 +3,7 @@
 
 
 #====================================
-#terraform state bucket for state.tf
+# terraform state bucket for state.tf
 #======================================
 
 resource "aws_s3_bucket" "terraform_state" { bucket = "vetop-vet-hospital-tf-state" }
