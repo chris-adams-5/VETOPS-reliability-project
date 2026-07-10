@@ -8,8 +8,8 @@ resource "aws_elasticache_serverless_cache" "redis_cache" {
   engine = "redis"
   name   = "vet-hospital-cache"
 
-  security_group_ids       = [aws_security_group.elasticache_sg.id]
-  subnet_ids               = ["subnet-09ffb20c4da788637", "subnet-0e606c290592d4005"]
+  security_group_ids = [aws_security_group.elasticache_sg.id]
+  subnet_ids         = ["subnet-09ffb20c4da788637", "subnet-0e606c290592d4005"]
 }
 
 #=========================
@@ -26,31 +26,31 @@ data "archive_file" "lambda_zip" {
 #=============================
 
 resource "aws_lambda_function" "cache_proxy" {
-    # points to the zip file from above
-    filename = data.archive_file.lambda_zip.output_path
-    function_name = "vet-cache-middleware"
+  # points to the zip file from above
+  filename      = data.archive_file.lambda_zip.output_path
+  function_name = "vet-cache-middleware"
 
-    #  link the role to the lambda
-    role = aws_iam_role.lambda_exec_role.arn
-    handler = "cache_proxy.lambda_handler"
+  #  link the role to the lambda
+  role    = aws_iam_role.lambda_exec_role.arn
+  handler = "cache_proxy.lambda_handler"
 
-    # makes sure that lambda is only updated when the python code changes
-    source_code_hash = data.archive_file.lambda_zip.output_base64sha256
-    runtime = "python3.12"
+  # makes sure that lambda is only updated when the python code changes
+  source_code_hash = data.archive_file.lambda_zip.output_base64sha256
+  runtime          = "python3.12"
 
-    # attach the lambda to my private subnet to give it access to the Redis cache
-    vpc_config {
-        subnet_ids = ["subnet-09ffb20c4da788637", "subnet-0e606c290592d4005"]
-        security_group_ids = [aws_security_group.lambda_sg.id]
-        }
+  # attach the lambda to my private subnet to give it access to the Redis cache
+  vpc_config {
+    subnet_ids         = ["subnet-09ffb20c4da788637", "subnet-0e606c290592d4005"]
+    security_group_ids = [aws_security_group.lambda_sg.id]
+  }
 
 
-    # code to put the redis endpoint url at the end of the lambda env variables so no need to hardcode.
-    environment {
-      
-      variables = {
-        REDIS_ENDPOINT = aws_elasticache_serverless_cache.redis_cache.endpoint[0].address
-        VENDOR_BACKEND_URL = "http://vetop-reliability-server.animal-hospital.mkrs.link/"
-      }
+  # code to put the redis endpoint url at the end of the lambda env variables so no need to hardcode.
+  environment {
+
+    variables = {
+      REDIS_ENDPOINT     = aws_elasticache_serverless_cache.redis_cache.endpoint[0].address
+      VENDOR_BACKEND_URL = "http://vetop-reliability-server.animal-hospital.mkrs.link/"
     }
+  }
 }

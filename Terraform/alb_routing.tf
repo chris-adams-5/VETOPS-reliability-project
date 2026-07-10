@@ -9,19 +9,19 @@ resource "aws_lb_target_group" "lambda_cache_tg" {
 # hook lambda to target group
 resource "aws_lb_target_group_attachment" "lambda_tg_attachment" {
   target_group_arn = aws_lb_target_group.lambda_cache_tg.arn
-  target_id        = aws_lambda_function.cache_proxy.arn 
+  target_id        = aws_lambda_function.cache_proxy.arn
 }
 
 # canary routing rule
 resource "aws_lb_listener_rule" "canary_cache_hospital_route" {
   # ALB listener ARN
   listener_arn = "arn:aws:elasticloadbalancing:eu-west-2:664047078509:listener/app/lb-VetOp/543123630aad3957/243c2e9edccb9b65"
-  
-  priority     = 100 # check this rule first
+
+  priority = 100 # check this rule first
 
   action {
     type = "forward"
-    
+
     forward {
       # THIS IS THE PERCENTAGE TRAFFIC TO BE SENT THE LAMBDA CACHE
       target_group {
@@ -44,7 +44,7 @@ resource "aws_lb_listener_rule" "canary_cache_hospital_route" {
       values = ["/hospital/*"]
     }
   }
-  
+
   # only intercept GET requests
   condition {
     http_request_method {
