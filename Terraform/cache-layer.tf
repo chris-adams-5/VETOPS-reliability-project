@@ -17,7 +17,7 @@ resource "aws_elasticache_serverless_cache" "redis_cache" {
 #===========================
 data "archive_file" "lambda_zip" {
   type        = "zip"
-  source_file = "${path.module}/../src/cache_proxy.py"
+  source_dir = "${path.module}/../src"
   output_path = "${path.module}/cache_proxy.zip"
 }
 

@@ -4,3 +4,4 @@ Terraform/terraform.tfstate
 Terraform/.terraform/providers/registry.terraform.io/hashicorp/aws/6.53.0/darwin_arm64/LICENSE.txt
 Terraform/.terraform/providers/registry.terraform.io/hashicorp/aws/6.53.0/darwin_arm64/terraform-provider-aws_v6.53.0_x5
 Terraform/.terraform/
+Terraform/cache_proxy.zip
