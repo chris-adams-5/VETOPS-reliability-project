@@ -12,14 +12,14 @@ resource "aws_security_group" "lambda_sg" {
     from_port = 6379
     to_port = 6379
     protocol = "tcp"
-    cidr_blocks = "0.0.0.0/0"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 # egress rule to let lambda to fetch data from the backend (if it isnt cached)
 egress {
     from_port = 80
     to_port = 443
     protocol = "tcp"
-    cidr_blocks = "0.0.0.0/0"
+    cidr_blocks = ["0.0.0.0/0"]
 }
 }
 
@@ -48,7 +48,7 @@ resource "aws_iam_role" "lambda_exec_role" {
     name = "vet-cache-lambda-role"
 
 # trust policy for role
-    assume_role_policy = jsondecode({
+    assume_role_policy = jsonencode({
         Version = "2012-10-17"
         Statement = [{
             Action = "sts:AssumeRole"
@@ -67,7 +67,7 @@ resource "aws_iam_role" "lambda_exec_role" {
 
 resource "aws_iam_role_policy_attachment" "lambda_vpc_access" {
     role = aws_iam_role.lambda_exec_role.name
-    policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAcessExecutionRole"
+    policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
 
 # ==========================================
