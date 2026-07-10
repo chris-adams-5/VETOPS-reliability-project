@@ -84,3 +84,4 @@ resource "aws_lambda_permission" "allow_alb" {
   
 # restricts access to least privelege.
   source_arn    = aws_lb_target_group.lambda_cache_tg.arn
+}
