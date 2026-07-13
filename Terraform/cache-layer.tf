@@ -5,7 +5,7 @@
 #====================
 
 resource "aws_elasticache_subnet_group" "redis_subnet_group" {
-  name       = "vet-hospital-redis-subnets"
+  name = "vet-hospital-redis-subnets"
   # dynamically linking to your new dedicated private subnets
   subnet_ids = [aws_subnet.vet_private_a.id, aws_subnet.vet_private_b.id]
 }
