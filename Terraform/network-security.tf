@@ -67,7 +67,7 @@ resource "aws_security_group" "lambda_sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  
+
   # egress rule to let lambda to fetch data from the backend (if it isnt cached)
   egress {
     from_port   = 80
@@ -127,13 +127,13 @@ resource "aws_iam_role_policy_attachment" "lambda_vpc_access" {
 #==========================================
 
 resource "aws_lambda_permission" "allow_alb" {
-  statement_id  = "AllowExecutionFromALB"
-  action        = "lambda:InvokeFunction"
+  statement_id = "AllowExecutionFromALB"
+  action       = "lambda:InvokeFunction"
 
   # yet to be defined/written, but named here for now
   function_name = aws_lambda_function.cache_proxy.function_name
   principal     = "elasticloadbalancing.amazonaws.com"
 
   # restricts access to least privelege.
-  source_arn    = aws_lb_target_group.lambda_cache_tg.arn
+  source_arn = aws_lb_target_group.lambda_cache_tg.arn
 }

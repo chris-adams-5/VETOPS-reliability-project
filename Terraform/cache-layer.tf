@@ -5,7 +5,7 @@
 #====================
 
 resource "aws_elasticache_subnet_group" "redis_subnet_group" {
-  name       = "vet-hospital-redis-subnets"
+  name = "vet-hospital-redis-subnets"
   # updated to use both verified private subnets (private-2a and private-2b)
   subnet_ids = ["subnet-09ffb20c4da788637", "subnet-06675bda1a1539f1f"]
 }
