@@ -44,6 +44,9 @@ resource "aws_lambda_function" "cache_proxy" {
   role    = aws_iam_role.lambda_exec_role.arn
   handler = "cache_proxy.lambda_handler"
 
+  # timeout
+  timeout = 15
+
   # makes sure that lambda is only updated when the python code changes
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
   runtime          = "python3.12"
@@ -59,7 +62,7 @@ resource "aws_lambda_function" "cache_proxy" {
   environment {
     variables = {
       REDIS_ENDPOINT     = aws_elasticache_cluster.redis_cache.cache_nodes[0].address
-      VENDOR_BACKEND_URL = "http://vetop-reliability-server.animal-hospital.mkrs.link/"
+      VENDOR_BACKEND_URL = "http://vetop-reliability-server.animal-hospital.mkrs.link"
       VENDOR_AUTH_HEADER = "Basic dGVzdC1hY2NvdW50LXZldG9wczp2ZXJ5d2Vhaw=="
     }
   }
