@@ -1,4 +1,30 @@
 #==========================================
+# DEDICATED PRIVATE SUBNETS FOR VETOP
+#==========================================
+
+# Clean subnet in Availability Zone A
+resource "aws_subnet" "vet_private_a" {
+  vpc_id            = "vpc-080dbb0b7dc86503a"
+  cidr_block        = "172.31.200.0/24" # Safe, unused IP range
+  availability_zone = "eu-west-2a"
+
+  tags = {
+    Name = "vet-dedicated-private-a"
+  }
+}
+
+# Clean subnet in Availability Zone B
+resource "aws_subnet" "vet_private_b" {
+  vpc_id            = "vpc-080dbb0b7dc86503a"
+  cidr_block        = "172.31.201.0/24" # Safe, unused IP range
+  availability_zone = "eu-west-2b"
+
+  tags = {
+    Name = "vet-dedicated-private-b"
+  }
+}
+
+#==========================================
 # NAT GATEWAY AND ELASTIC IP
 #==========================================
 
@@ -40,18 +66,17 @@ resource "aws_route_table" "private_rt" {
 # ROUTE TABLE ASSOCIATIONS
 #==========================================
 
-# link the first truly private subnet (RDS-Pvt-2) to the NAT table
+# securely link the first dedicated private subnet to the NAT table
 resource "aws_route_table_association" "private_subnet_1_assoc" {
-  subnet_id      = "subnet-04374107956672561"
+  subnet_id      = aws_subnet.vet_private_a.id
   route_table_id = aws_route_table.private_rt.id
 }
 
-# link the second truly private subnet (RDS-Pvt-3) to the NAT table
+# securely link the second dedicated private subnet to the NAT table
 resource "aws_route_table_association" "private_subnet_2_assoc" {
-  subnet_id      = "subnet-092c6ff09d7f423f8"
+  subnet_id      = aws_subnet.vet_private_b.id
   route_table_id = aws_route_table.private_rt.id
 }
-
 
 #==========================================
 # A SECURITY GROUP FOR THE LAMBDA FUNCTION
@@ -135,6 +160,6 @@ resource "aws_lambda_permission" "allow_alb" {
   function_name = aws_lambda_function.cache_proxy.function_name
   principal     = "elasticloadbalancing.amazonaws.com"
 
-  # restricts access to least privelege.
+  # restricts access to least privilege.
   source_arn = aws_lb_target_group.lambda_cache_tg.arn
 }
