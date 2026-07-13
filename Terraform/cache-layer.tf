@@ -6,7 +6,8 @@
 
 resource "aws_elasticache_subnet_group" "redis_subnet_group" {
   name       = "vet-hospital-redis-subnets"
-  subnet_ids = ["subnet-09ffb20c4da788637", "subnet-0e606c290592d4005"]
+  # updated to use both verified private subnets (private-2a and private-2b)
+  subnet_ids = ["subnet-09ffb20c4da788637", "subnet-06675bda1a1539f1f"]
 }
 
 # added in size of processor etc for server and subnet cluster group
@@ -47,17 +48,18 @@ resource "aws_lambda_function" "cache_proxy" {
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
   runtime          = "python3.12"
 
-  # attach the lambda to my private subnets to give it access to the Redis cache
+  # attach the lambda to my private subnets to give it access to the Redis cache and NAT Gateway
   vpc_config {
-    subnet_ids         = ["subnet-09ffb20c4da788637", "subnet-0e606c290592d4005"]
+    subnet_ids         = ["subnet-09ffb20c4da788637", "subnet-06675bda1a1539f1f"]
     security_group_ids = [aws_security_group.lambda_sg.id]
   }
 
-  # code to put the redis endpoint url at the end of the lambda env variables so no need to hardcode.
   environment {
     variables = {
       REDIS_ENDPOINT     = aws_elasticache_cluster.redis_cache.cache_nodes[0].address
       VENDOR_BACKEND_URL = "http://vetop-reliability-server.animal-hospital.mkrs.link/"
+      VENDOR_AUTH_HEADER = "Basic dGVzdC1hY2NvdW50LXZldG9wczp2ZXJ5d2Vhaw=="
     }
   }
+
 }

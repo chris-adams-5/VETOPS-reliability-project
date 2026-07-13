@@ -25,7 +25,17 @@ def lambda_handler(event, context):
             
         # if data isnt in cache get it from the backend
         vendor_url = f"{vendor_backend}{path}"
-        req = urllib.request.Request(vendor_url, method="GET")
+        
+        # pull the auth secret from the lambda environment
+        auth_header = os.environ.get('VENDOR_AUTH_HEADER')
+        
+        # inject the required authentication and a standard user-agent
+        req_headers = {
+            "Authorization": auth_header,
+            "User-Agent": "VetOp-Cache-Middleware/1.0"
+        }
+        
+        req = urllib.request.Request(vendor_url, headers=req_headers, method="GET")
         
         with urllib.request.urlopen(req) as response:
             live_data = response.read().decode('utf-8')
