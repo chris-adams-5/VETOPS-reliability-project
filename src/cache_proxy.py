@@ -33,6 +33,7 @@ def lambda_handler(event, context):
         req_headers = {
             "Authorization": auth_header,
             "User-Agent": "VetOp-Cache-Middleware/1.0"
+            "Accept": "application/json"
         }
         
         req = urllib.request.Request(vendor_url, headers=req_headers, method="GET")
