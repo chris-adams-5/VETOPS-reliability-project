@@ -32,7 +32,7 @@ def lambda_handler(event, context):
         # inject the required authentication and a standard user-agent
         req_headers = {
             "Authorization": auth_header,
-            "User-Agent": "VetOp-Cache-Middleware/1.0"
+            "User-Agent": "VetOp-Cache-Middleware/1.0",
             "Accept": "application/json"
         }
         
