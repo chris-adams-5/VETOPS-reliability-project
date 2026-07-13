@@ -40,17 +40,18 @@ resource "aws_route_table" "private_rt" {
 # ROUTE TABLE ASSOCIATIONS
 #==========================================
 
-# link the first private subnet (private-2a) to the new clean table
+# link the first truly private subnet (RDS-Pvt-2) to the NAT table
 resource "aws_route_table_association" "private_subnet_1_assoc" {
-  subnet_id      = "subnet-09ffb20c4da788637"
+  subnet_id      = "subnet-04374107956672561"
   route_table_id = aws_route_table.private_rt.id
 }
 
-# link the second private subnet (private-2b) to the new clean table
+# link the second truly private subnet (RDS-Pvt-3) to the NAT table
 resource "aws_route_table_association" "private_subnet_2_assoc" {
-  subnet_id      = "subnet-06675bda1a1539f1f"
+  subnet_id      = "subnet-092c6ff09d7f423f8"
   route_table_id = aws_route_table.private_rt.id
 }
+
 
 #==========================================
 # A SECURITY GROUP FOR THE LAMBDA FUNCTION

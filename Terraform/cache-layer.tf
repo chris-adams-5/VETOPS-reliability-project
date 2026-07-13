@@ -7,7 +7,8 @@
 resource "aws_elasticache_subnet_group" "redis_subnet_group" {
   name = "vet-hospital-redis-subnets"
   # updated to use both verified private subnets (private-2a and private-2b)
-  subnet_ids = ["subnet-09ffb20c4da788637", "subnet-06675bda1a1539f1f"]
+  subnet_ids = ["subnet-04374107956672561", "subnet-092c6ff09d7f423f8"]
+
 }
 
 # added in size of processor etc for server and subnet cluster group
@@ -50,7 +51,7 @@ resource "aws_lambda_function" "cache_proxy" {
 
   # attach the lambda to my private subnets to give it access to the Redis cache and NAT Gateway
   vpc_config {
-    subnet_ids         = ["subnet-09ffb20c4da788637", "subnet-06675bda1a1539f1f"]
+    subnet_ids         = ["subnet-04374107956672561", "subnet-092c6ff09d7f423f8"]
     security_group_ids = [aws_security_group.lambda_sg.id]
   }
 
