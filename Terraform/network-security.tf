@@ -190,7 +190,7 @@ resource "aws_security_group" "loadbalancer_sg" {
   }]
   ingress = [{
     cidr_blocks = [
-      "0.0.0.0/0"          # everything
+      "0.0.0.0/0" # everything
       # "18.175.129.196/32", # traffic generator
       # "46.208.96.91/32",   # Chris
       # "54.86.50.139/32",   # Joe (Postman)
