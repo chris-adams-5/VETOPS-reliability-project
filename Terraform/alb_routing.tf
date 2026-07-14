@@ -26,14 +26,14 @@ resource "aws_lb_listener_rule" "canary_cache_hospital_route" {
       # THIS IS THE PERCENTAGE TRAFFIC TO BE SENT THE LAMBDA CACHE
       target_group {
         arn    = aws_lb_target_group.lambda_cache_tg.arn
-        weight = 100
+        weight = 0
       }
 
       # THIS IS THE TRAFFIC GOING TO THE original vendor DB
       target_group {
         # existing vendor target group ARN
         arn    = "arn:aws:elasticloadbalancing:eu-west-2:664047078509:targetgroup/lb-tg-VetOp/7e8634d3230cb907"
-        weight = 0
+        weight = 100
       }
     }
   }
