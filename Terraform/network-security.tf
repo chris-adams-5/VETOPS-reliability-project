@@ -176,7 +176,7 @@ import {
 }
 
 resource "aws_security_group" "loadbalancer_sg" {
-  description = "Allows ingress via TCP on port 80 from whitelisted IPs."
+  description = "Allows ingress via TCP on port 80 from all sources."
   egress = [{
     cidr_blocks      = ["0.0.0.0/0"]
     description      = ""
