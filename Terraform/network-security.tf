@@ -163,3 +163,50 @@ resource "aws_lambda_permission" "allow_alb" {
   # restricts access to least privilege.
   source_arn = aws_lb_target_group.lambda_cache_tg.arn
 }
+
+#==========================================
+# LOAD BALANCER SECURITY GROUP
+#==========================================
+
+import {
+  to = aws_security_group.loadbalancer_sg
+  identity = {
+    id = "sg-004241c2cdb8475b9"
+  }
+}
+
+resource "aws_security_group" "loadbalancer_sg" {
+  description = "Allows ingress via TCP on port 80 from whitelisted IPs."
+  egress = [{
+    cidr_blocks      = ["0.0.0.0/0"]
+    description      = ""
+    from_port        = 0
+    ipv6_cidr_blocks = ["::/0"]
+    prefix_list_ids  = []
+    protocol         = "-1"
+    security_groups  = []
+    self             = false
+    to_port          = 0
+  }]
+  ingress = [{
+    cidr_blocks      = ["18.175.129.196/32", "46.208.96.91/32", "54.86.50.139/32", "86.19.92.50/32", "37.156.73.193/32"]
+    description      = ""
+    from_port        = 80
+    ipv6_cidr_blocks = ["::/0"]
+    prefix_list_ids  = []
+    protocol         = "tcp"
+    security_groups  = []
+    self             = false
+    to_port          = 80
+  }]
+  name                   = "Load Balancer Security Group VetOp"
+  region                 = "eu-west-2"
+  revoke_rules_on_delete = null
+  tags = {
+    Owner = "Students"
+  }
+  tags_all = {
+    Owner = "Students"
+  }
+  vpc_id = "vpc-080dbb0b7dc86503a"
+}
