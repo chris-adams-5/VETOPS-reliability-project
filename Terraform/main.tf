@@ -32,7 +32,7 @@ resource "aws_lb" "org-loadbalancer" {
   name                                        = "lb-VetOp"
   preserve_host_header                        = false
   region                                      = "eu-west-2"
-  security_groups                             = ["sg-004241c2cdb8475b9"]
+  security_groups                             = [aws_security_group.loadbalancer_sg.id]
   tags = {
     Owner = "Students"
   }
