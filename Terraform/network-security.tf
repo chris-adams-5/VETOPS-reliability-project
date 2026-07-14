@@ -189,7 +189,13 @@ resource "aws_security_group" "loadbalancer_sg" {
     to_port          = 0
   }]
   ingress = [{
-    cidr_blocks      = ["18.175.129.196/32", "46.208.96.91/32", "54.86.50.139/32", "86.19.92.50/32", "37.156.73.193/32"]
+    cidr_blocks = [
+      "18.175.129.196/32", # traffic generator
+      "46.208.96.91/32",   # Chris
+      "54.86.50.139/32",   # Joe (Postman)
+      "86.19.92.50/32",    # Ian
+      "37.156.73.193/32"   # T
+    ]
     description      = ""
     from_port        = 80
     ipv6_cidr_blocks = ["::/0"]
