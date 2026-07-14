@@ -62,7 +62,7 @@ resource "aws_lambda_function" "cache_proxy" {
   environment {
     variables = {
       REDIS_ENDPOINT     = aws_elasticache_cluster.redis_cache.cache_nodes[0].address
-      VENDOR_BACKEND_URL = "http://vetop-reliability-server.animal-hospital.mkrs.link"
+      VENDOR_BACKEND_URL = "http://18.134.210.167"
       VENDOR_AUTH_HEADER = "Basic dGVzdC1hY2NvdW50LXZldG9wczp2ZXJ5d2Vhaw=="
     }
   }
