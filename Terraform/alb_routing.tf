@@ -39,26 +39,26 @@ resource "aws_lb_listener_rule" "canary_cache_hospital_route" {
   }
 
 
-  # # only grab /hospitals ROUTES
-  # condition {
-  #   path_pattern {
-  #     values = ["/hospitals*", "/staffs*", "/patients*", "/notes*"]
-  #   }
-  # }
-  # # 
-
-  # only intercept GET requests
+  # only grab /hospitals ROUTES
   condition {
-    http_request_method {
-      values = ["GET"]
+    path_pattern {
+      values = ["/notes", "/hospitals"]
     }
   }
+  # 
+
+  # only intercept POST requests
+  # condition {
+  #   http_request_method {
+  #     values = ["POST"]
+  #   }
+  # }
 
   # optional IP filtering
   # uncomment to restrict the test to just these IPs
-  #   condition {
-  #     source_ip {
-  #       values = ["54.86.50.139/32", "86.19.92.50/32", "46.208.96.91/32"] # add tester(s) IP ADDRESSES HERE!
-  #     }
-  #   }
+  condition {
+    source_ip {
+      values = ["54.86.50.139/32", "86.19.92.50/32", "46.208.96.91/32"] # add tester(s) IP ADDRESSES HERE!
+    }
+  }
 }
