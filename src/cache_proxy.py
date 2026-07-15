@@ -17,7 +17,7 @@ def lambda_handler(event, context):
         return get_cache(event)
     
     if http_method == "POST":
-        # post_print_body(event)
+        post_print_body(event)
         return post_try_again(event)
 
 
@@ -101,14 +101,10 @@ def post_try_again(event):
             "Content-Type": "application/json"
         }
 
-    print(http_method)
-    print(path)
-    print(req_headers)
     
     # the alb send a text string to lambdas but the server expects bits
     req_body = body.encode('utf-8') if body else None
     
-    print((req_body)) 
     no_attempts = 2
     
     for attempt_index in range(no_attempts):
@@ -164,7 +160,7 @@ def post_try_again(event):
                     "body": err_body
                     }
             if e.code >= 400 and e.code < 500:
-                print(err_body)
+             
                 return {
                     "statusCode": e.code,
                     "statusDescription": f"{e.code} {err_body[23:-2]}",
