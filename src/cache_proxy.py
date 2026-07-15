@@ -142,10 +142,7 @@ def post_try_again(event):
                   continue  # Loop back up and try one more time
                 
             # return other status codes
-            try:
-                err_body = e.read().decode('utf-8')
-            except Exception:
-                err_body = json.dumps({"error": f"Target returned HTTP status {e.code}"})
+            err_body = e.read().decode('utf-8')
             
             #return 500s after one try
             if e.code == 500:
@@ -173,10 +170,10 @@ def post_try_again(event):
             
             # if it's one error try again
             if attempt_number < no_attempts:
-                print("Retrying due to network failure...")
+                print("None http error")
                 continue
         
-            print(f"Network error on attempt {attempt_number}: {str(e)}")
+            print(f"None http error {attempt_number}: {str(e)}")
   
             return {
                     "statusCode": 502,
