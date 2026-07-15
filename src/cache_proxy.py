@@ -110,9 +110,9 @@ def post_try_again(event):
     for attempt_index in range(no_attempts):
         attempt_number = attempt_index + 1
         
-        if attempt_number > 1:
-            print("Waiting 0.25 second before retrying...")
-            time.sleep(0.25)
+        # if attempt_number > 1:
+        #     print("Waiting 0.25 second before retrying...")
+        #     time.sleep(0.25)
         
         try:
             req = urllib.request.Request(
@@ -124,7 +124,8 @@ def post_try_again(event):
             
             with urllib.request.urlopen(req) as response:
                 response_body = response.read().decode('utf-8')
-                print(f"Success on attempt {attempt_number}. Status code: {response.getcode()}")
+                if attempt_number == 2:
+                    print(f"Success on attempt {attempt_number}. Status code: {response.getcode()}")
                 
                 return {
                   "statusCode": response.getcode(),
@@ -138,7 +139,7 @@ def post_try_again(event):
             
             # try again if it's not the last try
             if e.code == 500 and attempt_number < no_attempts:
-                  print("Received a 500 Internal Server Error. Retrying request...")
+                #   print("Received a 500 Internal Server Error. Retrying request...")
                   continue  # Loop back up and try one more time
                 
             # return other status codes
@@ -170,7 +171,7 @@ def post_try_again(event):
             
             # if it's one error try again
             if attempt_number < no_attempts:
-                print("None http error")
+                # print("None http error")
                 continue
         
             print(f"None http error {attempt_number}: {str(e)}")
