@@ -17,8 +17,20 @@ def lambda_handler(event, context):
         return get_cache(event)
     
     if http_method == "POST":
-        post_print_body(event)
-        return post_try_again(event)
+        #send the request to the rety function and save the outcome to 'response' variable.
+        response = post_try_again(event)
+        # get the status code from the responses / dictionary
+        status_code = response[status_code]
+
+        if status_code >= 400:
+            print(f"POST Error: {status_code}")
+            # prints path or a / if there isnt one
+            print(f"failed path: {event.get('path', '/')}")
+            print(f"Failed Headers: {event.get('headers', {})}")
+            print(f"Failed Body: {event.get('body', '')}")
+
+        return response
+
 
 
 def get_cache(event):
@@ -191,9 +203,9 @@ def post_try_again(event):
     }
    
 
-def post_print_body(event):
-    body = event.get("body", "")
-    print(body)
+# def post_print_body(event):
+#     body = event.get("body", "")
+#     print(body)
 
-    headers = event.get("headers", {})
-    print(headers)
+#     headers = event.get("headers", {})
+#     print(headers)
