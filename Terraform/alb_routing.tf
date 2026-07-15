@@ -40,11 +40,11 @@ resource "aws_lb_listener_rule" "canary_cache_hospital_route" {
 
 
   # only grab /hospitals ROUTES
-  condition {
-    path_pattern {
-      values = ["/notes", "/hospitals"]
-    }
-  }
+  # condition {
+  #   path_pattern {
+  #     values = ["/notes", "/hospitals"]
+  #   }
+  # }
   # 
 
   # only intercept POST requests
