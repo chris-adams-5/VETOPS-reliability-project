@@ -1,0 +1,13 @@
+{
+  "requestContext": {},
+  "httpMethod": "POST",
+  "path": "/notes",
+  "queryStringParameters": {},
+  "headers": {
+    "accept": "application/json",
+    "content-type": "application/json",
+    "user-agent": "curl/8.0"
+  },
+  "body": "{'title':'Test Name', 'body': 'Test Body', 'patient_id': 5, 'staff_id':1}",
+  "isBase64Encoded": false
+}
